@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books List</title>
+    <link rel="stylesheet" href="{% static 'css/core.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Books List</h1>
+        {% csrf_token %}
+
+        <!-- Books Table -->
+        <h2>Books Table</h2>
+        <table id="books-table" border="1">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Language</th>
+                    <th>Subject</th>
+                    <th>Genre</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author_name }}</td>
+                    <td>{{ book.language }}</td>
+                    <td>{{ book.subject }}</td>
+                    <td>{{ book.genre }}</td>
+                    <td>
+                        <button class="edit-btn" data-id="{{ book.id }}">Edit</button>
+                        <button class="delete-btn" data-id="{{ book.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No books available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Edit Book Form -->
+        <form id="edit-book-form" style="display: none;">
+            {% csrf_token %}
+            <h2>Edit Book</h2>
+            <input type="hidden" id="edit-book-id">
+            
+            <label for="edit-title">Title:</label>
+            <input type="text" id="edit-title" name="title" placeholder="Book Title" required>
+            
+            <label for="edit-author">Author:</label>
+            <input type="text" id="edit-author" name="author" placeholder="Author Name" required>
+            
+            <label for="edit-language">Language:</label>
+            <input type="text" id="edit-language" name="language" placeholder="Language">
+            
+            <label for="edit-subject">Subject:</label>
+            <input type="text" id="edit-subject" name="subject" placeholder="Subject">
+            
+            <label for="edit-genre">Genre:</label>
+            <input type="text" id="edit-genre" name="genre" placeholder="Genre">
+            
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <a href="/books/">Back to Add Books</a>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>   
