@@ -9,7 +9,6 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author_name = models.CharField(max_length=255)  # Store author name directly
-    # author_name = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
     genre = models.CharField(max_length=100, null=True, blank=True)
     language = models.CharField(max_length=50)
     subject = models.TextField(null=True, blank=True)

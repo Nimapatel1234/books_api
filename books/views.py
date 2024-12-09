@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404 ,redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,9 +8,59 @@ from .serializers import BookSerializer
 from rest_framework.pagination import PageNumberPagination
 # from .utils import list_books
 from .models import Book
-
+from rest_framework.permissions import IsAdminUser , IsAuthenticated
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 from django.db import connection
+
+# Register User (Admin Only)
+def register_user(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        messages.error(request, "Only admin users can register new accounts.")
+        return redirect('login')
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists')
+            elif User.objects.filter(email=email).exists():
+                messages.error(request, 'Email already exists')
+            else:
+                User.objects.create_user(username=username, email=email, password=password)
+                messages.success(request, 'Registration successful')
+                return redirect('login')
+        else:
+            messages.error(request, 'Passwords do not match')
+    return render(request, 'register.html')
+
+# Login User
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Login successful')
+            return redirect('books-page')  # Redirect to books page
+        else:
+            messages.error(request, 'Invalid credentials')
+    return render(request, 'login.html')
+
+# Logout User
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'You have been logged out')
+    return redirect('login')
+
 
 def list_books():
     with connection.cursor() as cursor:
@@ -21,10 +71,13 @@ def list_books():
 
 
 # HTML rendering for books page
+
+# Books Page
 def books_page(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to view this page.")
+        return redirect('login')
     return render(request, "books.html")
-
-
 # Custom pagination class
 class CustomPagination(PageNumberPagination):
     page_size = 25
@@ -45,26 +98,15 @@ def book_list_page(request):
 
 # API View for book list and creation
 class BookListView(APIView):
-    def get(self, request):
-        books = Book.objects.all()[:25]  # Fetch top 25 books
-        return Response({"books": list(books.values())})
-    # def get(self, request):
-    #     # Retrieve all books with filters and pagination
-    #     filters = Q()
-    #     if 'language' in request.GET:
-    #         filters &= Q(language__in=request.GET['language'].split(','))
-    #     if 'topic' in request.GET:
-    #         filters &= Q(subject__icontains=request.GET['topic']) | Q(bookshelf__icontains=request.GET['topic'])
-    #     if 'author_name' in request.GET:
-    #         filters &= Q(author_name__icontains=request.GET['author_name'])
-    #     if 'title' in request.GET:
-    #         filters &= Q(title__icontains=request.GET['title'])
+    permission_classes = [IsAuthenticated]
 
-    #     books = Book.objects.filter(filters).order_by('-download_count')
-    #     paginator = CustomPagination()
-    #     paginated_books = paginator.paginate_queryset(books, request)
-    #     serializer = BookSerializer(paginated_books, many=True)
-    #     return paginator.get_paginated_response(serializer.data)
+    def get(self, request):
+        books =books = Book.objects.all()
+        paginator = CustomPagination()
+        paginated_books = paginator.paginate_queryset(books, request)
+        serializer = BookSerializer(paginated_books, many=True)
+        return paginator.get_paginated_response(serializer.data)
+ 
 
     def post(self, request):
         # Create a new book
@@ -77,6 +119,8 @@ class BookListView(APIView):
 
 # API View for detailed book operations
 class BookDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, pk):
         # Retrieve a single book by ID
         book = get_object_or_404(Book, pk=pk)
