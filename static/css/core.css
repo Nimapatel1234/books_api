@@ -1,0 +1,123 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Header Styling */
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #444444;
+    margin-bottom: 15px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #dddddd;
+}
+
+table th {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button Styling */
+button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button.delete-btn {
+    background-color: #e53935;
+}
+
+button.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Form Styling */
+form {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555555;
+}
+
+form input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333333;
+}
+
+form button {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Back Link Styling */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
