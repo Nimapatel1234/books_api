@@ -8,3 +8,9 @@ Create venv
 py -m venv env
 # after activation the env
 pip install -r requirements.txt
+
+
+You can access to localhost:5000/admin/ url with this login data:
+
+username : nima2
+password : 231
