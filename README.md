@@ -61,15 +61,25 @@ Set up a virtual environment to manage project dependencies:
 Copy code
 python -m venv venv
 
+
+
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 Install Dependencies
+
+
 Install the required Python libraries using requirements.txt:
 
 # bash
 Copy code
 pip install -r requirements.txt
 
+
+
 Run Migrations
+python manage.py makemigrations
+
+python manage.py migrate
+
 
 Apply database migrations:
 
