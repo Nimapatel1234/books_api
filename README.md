@@ -1,12 +1,12 @@
 # Book Retrieval API
 This project implements a RESTful API for a book retrieval system using Django and Django REST Framework (DRF). The API allows searching for books based on various filter criteria, supporting pagination, and returning books in JSON format.
 
-Project Overview
+# Project Overview
 The Book Retrieval API provides the following functionality:
 
 Retrieve Books: Search for books based on zero or more filter criteria.
 
-Filter Options:
+# Filter Options:
 
 Book ID (Project Gutenberg ID numbers)
 Language
@@ -27,20 +27,15 @@ Bookshelf(s)
 Download links for the book in available formats (mime-types).
 Pagination: Retrieve books in sets of 25 if the results exceed the limit.
 
-Features
+# Features
 Case-Insensitive Partial Matching:
 Supports case-insensitive search for topics, authors, and titles.
 Example: Searching for topic=child will return books with subjects like Child education and bookshelves like Children’s literature.
 Multiple Filter Criteria:
 Allows combining multiple filter criteria in a single API call.
 Example: Filter on language=en,fr and topic=child,infant.
-Pagination:
-If more than 25 books match the criteria, the API returns the first 25 results and provides a mechanism to retrieve additional sets of results.
-Sorting:
-Books are returned in decreasing order of popularity (measured by the number of downloads).
-Setup Instructions
-Prerequisites
-Ensure you have the following installed:
+
+# Ensure you have the following installed:
 
 Python 3.x
 pip (Python package installer)
@@ -85,7 +80,7 @@ The API will be available at:
 ruby
 Copy code
 http://127.0.0.1:8000/api/books/
-API Endpoints
+ # API Endpoints
 Retrieve Books
 Endpoint: /api/books/
 Method: GET
@@ -101,26 +96,65 @@ title	String	Filter by book title. Supports case-insensitive partial matching.	t
 page	Integer	Paginate through results (25 books per page).	page=2
 Response Example
 json
-Copy code
 {
-  "count": 120,
-  "next": "http://127.0.0.1:8000/api/books/?page=2",
-  "previous": null,
-  "results": [
-    {
-      "title": "Hamlet",
-      "author": "William Shakespeare",
-      "genre": "Tragedy",
-      "language": "en",
-      "subjects": ["Drama", "Tragedy"],
-      "bookshelves": ["Shakespearean literature"],
-      "download_links": [
-        {"mime-type": "text/plain", "url": "http://example.com/hamlet.txt"},
-        {"mime-type": "application/pdf", "url": "http://example.com/hamlet.pdf"}
-      ]
-    }
-  ]
+    "count": 6,
+    "next": null,
+    "previous": null,
+    "results": [
+       
+        {
+            "id": 8,
+            "title": "A Brief History of Time",
+            "author_name": "Stephen Hawking",
+            "genre": "Non-Fiction",
+            "language": "English",
+            "subject": "Science, Physics",
+            "bookshelf": null,
+            "download_count": 0,
+            "download_links": []
+        },
+        {
+            "id": 9,
+            "title": "Pride and Prejudice",
+            "author_name": "Jane Austen",
+            "genre": "Classic",
+            "language": "English",
+            "subject": "Romance, Society",
+            "bookshelf": "aqsdfv",
+            "download_count": 0,
+            "download_links": []
+        },
+        {
+            "id": 11,
+            "title": "another example",
+            "author_name": "john doe",
+            "genre": "fiction",
+            "language": "English",
+            "subject": "children's literature",
+            "bookshelf": "child education",
+            "download_count": 10,
+            "download_links": []
+        },
+        {
+            "id": 1,
+            "title": "swdefg",
+            "author_name": "1",
+            "genre": "sdfvgbn",
+            "language": "sxdcvb",
+            "subject": "sdcfvb n",
+            "bookshelf": null,
+            "download_count": 0,
+            "download_links": [
+                {
+                    "mime_type": "application/octet-stream",
+                    "url": "https://workdrive.zohoexternal.com/file/tkojn5916f1c21d994f5da21158f29d5b186a"
+                }
+            ]
+        }
+    ]
 }
+
+
 Example API Call
 To retrieve books in English or French related to "child" or "infant" topics:
 
