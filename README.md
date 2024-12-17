@@ -47,14 +47,18 @@ Clone the project from GitHub:
 
 # bash
 Copy code
-git clone https://github.com/Nimapatel1234/books_api.git
+  
+  git clone https://github.com/Nimapatel1234/books_api.git
 cd book-api
+
 Create a Virtual Environment
+
 Set up a virtual environment to manage project dependencies:
 
 # bash
 Copy code
 python -m venv venv
+
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 Install Dependencies
 Install the required Python libraries using requirements.txt:
@@ -62,18 +66,27 @@ Install the required Python libraries using requirements.txt:
 # bash
 Copy code
 pip install -r requirements.txt
+
 Run Migrations
+
 Apply database migrations:
 
 # bash
 Copy code
 python manage.py migrate
-Start the Development Server
+
+Start the Development Server 
+
 Run the Django development server:
 
 # bash
 Copy code
 python manage.py runserver
+
+# bash 
+Copy code 
+pip install drf-yasg
+
 Access the API
 The API will be available at:
 
