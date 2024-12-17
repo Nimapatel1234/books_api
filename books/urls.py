@@ -1,43 +1,30 @@
-# from django.urls import path
-# from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-# from .views import BookListView, books_page, BookDetailView ,BookRawQueryView ,book_list_page
+from django.urls import path, re_path
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from .views import register_user, login_user, logout_user, books_page, BookListView, BookDetailView, book_list_page
 
-# urlpatterns = [
-#     path('api/books/raw/', BookRawQueryView.as_view(), name='book-raw-query'),
-#     path('data/', book_list_page, name='data-page'),
-
-#     path('api/books/', BookListView.as_view(), name='book-list'),
-#     path('api/books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
-#     path('books/', books_page, name='books-page'),
-#     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-#     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-# ]
-
-# from django.urls import path
-# from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-# from .views import BookListView, BookDetailView, books_page, book_list_page ,register_user, login_user, logout_user
-
-# urlpatterns = [
-#     path('api/books/', BookListView.as_view(), name='book-list'),
-#         path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
-#    path('', register_user, name='register'),
-#     path('login/', login_user, name='login'),
-#     path('logout/', logout_user, name='logout'),
-#     path('api/books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
-#     path('books/', books_page, name='books-page'),
-#     path('data/', book_list_page, name='data-page'),
-# ]
-
-from django.urls import path
-from .views import register_user, login_user, logout_user,book_list_page, books_page, BookListView, BookDetailView
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Books API",
+        default_version='v1',
+        description="API documentation for managing books",
+        contact=openapi.Contact(email="nima2001patel@gmail.com"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('', register_user, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('books/', books_page, name='books-page'),
+    path('data/', book_list_page, name='data-page'),
     path('api/books/', BookListView.as_view(), name='book-list'),
     path('api/books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
-     path('data/', book_list_page, name='data-page'),
+    
+    # Swagger URLs
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
-
