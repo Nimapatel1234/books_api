@@ -45,41 +45,39 @@ Steps to Run the Project
 Clone the repository
 Clone the project from GitHub:
 
-bash
+# bash
 Copy code
 git clone https://github.com/Nimapatel1234/books_api.git
 cd book-api
 Create a Virtual Environment
 Set up a virtual environment to manage project dependencies:
 
-bash
+# bash
 Copy code
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 Install Dependencies
 Install the required Python libraries using requirements.txt:
 
-bash
+# bash
 Copy code
 pip install -r requirements.txt
 Run Migrations
 Apply database migrations:
 
-bash
+# bash
 Copy code
 python manage.py migrate
 Start the Development Server
 Run the Django development server:
 
-bash
+# bash
 Copy code
 python manage.py runserver
 Access the API
 The API will be available at:
 
-ruby
-Copy code
-http://127.0.0.1:8000/api/books/
+
  # API Endpoints
 Retrieve Books
 Endpoint: /api/books/
