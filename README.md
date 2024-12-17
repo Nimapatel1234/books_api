@@ -47,7 +47,7 @@ Clone the project from GitHub:
 
 bash
 Copy code
-git clone https://github.com/yourusername/book-api.git
+git clone https://github.com/Nimapatel1234/books_api.git
 cd book-api
 Create a Virtual Environment
 Set up a virtual environment to manage project dependencies:
