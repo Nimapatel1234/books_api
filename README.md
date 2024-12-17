@@ -83,9 +83,13 @@ Run the Django development server:
 Copy code
 python manage.py runserver
 
-# bash 
-Copy code 
+Install Swagger API for API Endpoint Documentation
+To enable Swagger/OpenAPI documentation for your API endpoints, install the drf-yasg package:
+
+bash
+Copy code
 pip install drf-yasg
+
 
 Access the API
 The API will be available at:
