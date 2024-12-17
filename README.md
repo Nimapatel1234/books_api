@@ -1,218 +1,132 @@
-﻿
-# Library Management System API
+Book Retrieval API
+This project implements a RESTful API for a book retrieval system using Django and Django REST Framework (DRF). The API allows searching for books based on various filter criteria, supporting pagination, and returning books in JSON format.
 
-This project implements a RESTful API for a library management system using Django and Django REST Framework (DRF). It allows managing books, borrowers, and loans. Users can borrow and return books, and get information on active loans and borrowing history.
+Project Overview
+The Book Retrieval API provides the following functionality:
 
-## Project Overview
+Retrieve Books: Search for books based on zero or more filter criteria.
 
-The Library Management System includes the following functionality:
+Filter Options:
 
-- **Books**: Add new books to the system and list books with filter options for availability.
-- **Borrowers**: Register borrowers who can borrow books.
-- **Loans**: Track borrowed books and manage borrowing and returning books.
+Book ID (Project Gutenberg ID numbers)
+Language
+Mime-type
+Topic (filters on "subject" or "bookshelf" or both)
+Author
+Title
+API Response:
 
-## Features
+Number of books matching the criteria.
+A list of book objects with detailed information:
+Title of the book
+Information about the author
+Genre
+Language
+Subject(s)
+Bookshelf(s)
+Download links for the book in available formats (mime-types).
+Pagination: Retrieve books in sets of 25 if the results exceed the limit.
 
-- Add new books to the library.
-- Borrow books (with a borrowing limit of 3 active books).
-- Return books and track their status.
-- Get active loans for a borrower.
-- Get the borrowing history of a borrower.
+Features
+Case-Insensitive Partial Matching:
+Supports case-insensitive search for topics, authors, and titles.
+Example: Searching for topic=child will return books with subjects like Child education and bookshelves like Children’s literature.
+Multiple Filter Criteria:
+Allows combining multiple filter criteria in a single API call.
+Example: Filter on language=en,fr and topic=child,infant.
+Pagination:
+If more than 25 books match the criteria, the API returns the first 25 results and provides a mechanism to retrieve additional sets of results.
+Sorting:
+Books are returned in decreasing order of popularity (measured by the number of downloads).
+Setup Instructions
+Prerequisites
+Ensure you have the following installed:
 
-## Setup Instructions
+Python 3.x
+pip (Python package installer)
+Django
+Django REST Framework (DRF)
+Steps to Run the Project
+Clone the repository
+Clone the project from GitHub:
 
-### Prerequisites
+bash
+Copy code
+git clone https://github.com/yourusername/book-api.git
+cd book-api
+Create a Virtual Environment
+Set up a virtual environment to manage project dependencies:
 
-Make sure you have the following installed:
+bash
+Copy code
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+Install Dependencies
+Install the required Python libraries using requirements.txt:
 
-- Python 3.x
-- pip (Python package installer)
-- Django
-- Django REST Framework
+bash
+Copy code
+pip install -r requirements.txt
+Run Migrations
+Apply database migrations:
 
-### Steps to Run the Project
+bash
+Copy code
+python manage.py migrate
+Start the Development Server
+Run the Django development server:
 
-1. **Clone the repository**  
-   Clone the project from GitHub:
+bash
+Copy code
+python manage.py runserver
+Access the API
+The API will be available at:
 
-   ```bash
-   git clone https://github.com/yourusername/library-management-system.git
-   cd library-management-system
-   ```
-
-2. **Create a Virtual Environment**  
-   It's recommended to use a virtual environment to manage project dependencies. You can create and activate a virtual environment like this:
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-3. **Install Dependencies**  
-   Install all the required dependencies using pip:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run Migrations**  
-   Run Django migrations to set up the database:
-
-   ```bash
-   python manage.py migrate
-   ```
-
-5. **Create Superuser (Optional)**  
-   To access the Django admin panel, you can create a superuser account:
-
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-   Follow the prompts to set up the superuser credentials.
-
-6. **Run the Development Server**  
-   Start the Django development server:
-
-   ```bash
-   python manage.py runserver
-   ```
-
-   Your application will be accessible at `http://127.0.0.1:8000/`.
-
-## API Endpoints
-
-### Book Management
-
-- **POST /api/books/**  
-  Add a new book to the library.
-
-  **Request Body Example:**
-
-  ```json
-  {
-    "title": "Book Title",
-    "author": "Author Name",
-    "published_date": "2024-11-09",
-    "isbn": "1234567890123",
-    "available": true
-  }
-  ```
-
-- **GET /api/books/list/**  
-  List all books. You can filter by availability using the `available` query parameter.
-
-  **Example Request:**
-
-  ```
-  GET /api/books/list/?available=true
-  ```
-
-  **Response Example:**
-
-  ```json
-  [
+ruby
+Copy code
+http://127.0.0.1:8000/api/books/
+API Endpoints
+Retrieve Books
+Endpoint: /api/books/
+Method: GET
+Description: Retrieve books based on filter criteria.
+Query Parameters
+Parameter	Type	Description	Example
+id	Integer	Filter by Project Gutenberg book ID.	id=1234
+language	String	Filter by language. Multiple values can be provided.	language=en,fr
+mime-type	String	Filter by mime-type of download formats.	mime-type=text/plain
+topic	String	Filter by subject or bookshelf. Supports partial matches.	topic=child
+author	String	Filter by author's name. Supports case-insensitive partial matching.	author=shakespeare
+title	String	Filter by book title. Supports case-insensitive partial matching.	title=hamlet
+page	Integer	Paginate through results (25 books per page).	page=2
+Response Example
+json
+Copy code
+{
+  "count": 120,
+  "next": "http://127.0.0.1:8000/api/books/?page=2",
+  "previous": null,
+  "results": [
     {
-      "id": 1,
-      "title": "Book Title",
-      "author": "Author Name",
-      "published_date": "2024-11-09",
-      "isbn": "1234567890123",
-      "available": true
+      "title": "Hamlet",
+      "author": "William Shakespeare",
+      "genre": "Tragedy",
+      "language": "en",
+      "subjects": ["Drama", "Tragedy"],
+      "bookshelves": ["Shakespearean literature"],
+      "download_links": [
+        {"mime-type": "text/plain", "url": "http://example.com/hamlet.txt"},
+        {"mime-type": "application/pdf", "url": "http://example.com/hamlet.pdf"}
+      ]
     }
   ]
-  ```
+}
+Example API Call
+To retrieve books in English or French related to "child" or "infant" topics:
 
-### Borrowing and Returning
-
-- **POST /api/borrow/**  
-  Borrow a book using `book_id` and `borrower_id`. The book’s availability will be updated, and the borrow count will be incremented.
-
-  **Request Body Example:**
-
-  ```json
-  {
-    "book_id": 1,
-    "borrower_id": 1
-  }
-  ```
-
-- **POST /api/return/**  
-  Return a borrowed book using `book_id`. The book's availability will be updated, and the loan will be marked as returned.
-
-  **Request Body Example:**
-
-  ```json
-  {
-    "book_id": 1
-  }
-  ```
-
-### Borrowed Books and Borrower History
-
-- **GET /api/borrowed/{borrower_id}/**  
-  List all active (unreturned) books for a borrower.
-
-  **Example Request:**
-
-  ```
-  GET /api/borrowed/1/
-  ```
-
-  **Response Example:**
-
-  ```json
-  [
-    {
-      "id": 1,
-      "book": {
-        "id": 1,
-        "title": "Book Title"
-      },
-      "borrowed_date": "2024-11-09",
-      "is_returned": false
-    }
-  ]
-  ```
-
-- **GET /api/history/{borrower_id}/**  
-  List all books ever borrowed by the borrower, including return status.
-
-  **Example Request:**
-
-  ```
-  GET /api/history/1/
-  ```
-
-  **Response Example:**
-
-  ```json
-  [
-    {
-      "id": 1,
-      "book": {
-        "id": 1,
-        "title": "Book Title"
-      },
-      "borrowed_date": "2024-11-09",
-      "return_date": "2024-11-10",
-      "is_returned": true
-    }
-  ]
-  ```
-
-## Error Handling
-
-- **400 Bad Request**: If the request data is invalid.
-- **404 Not Found**: If the resource is not found (e.g., borrower or book does not exist).
-- **500 Internal Server Error**: If there's an unexpected server error.
-
-## Documentation
-
-This API follows REST principles, and all endpoints are designed to be simple and easy to use with clear error messages. The response data is returned in JSON format. For more detailed documentation on how to use the API, you can refer to the [Django REST Framework documentation](https://www.django-rest-framework.org/).
-
-## Additional Information
-
-- **Django Version**: 3.2+
-- **Django REST Framework Version**: 3.12+
-- **Database**: SQLite (by default), but you can change the database settings in `settings.py`.
+sql
+Copy code
+GET /api/books/?language=en,fr&topic=child,infant
+Pagination Details
+Results are paginated in sets of 25 books.
+Use the next and previous links in the API response to navigate between pages.
