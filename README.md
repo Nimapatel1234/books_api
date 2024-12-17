@@ -115,28 +115,7 @@ json
     "previous": null,
     "results": [
        
-        {
-            "id": 8,
-            "title": "A Brief History of Time",
-            "author_name": "Stephen Hawking",
-            "genre": "Non-Fiction",
-            "language": "English",
-            "subject": "Science, Physics",
-            "bookshelf": null,
-            "download_count": 0,
-            "download_links": []
-        },
-        {
-            "id": 9,
-            "title": "Pride and Prejudice",
-            "author_name": "Jane Austen",
-            "genre": "Classic",
-            "language": "English",
-            "subject": "Romance, Society",
-            "bookshelf": "aqsdfv",
-            "download_count": 0,
-            "download_links": []
-        },
+       
         {
             "id": 11,
             "title": "another example",
