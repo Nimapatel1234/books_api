@@ -168,7 +168,10 @@ json
 # Pagination
 The API supports pagination for GET requests to the
 
-/api/books/ endpoint. By default, 10 items are returned per page.
+/api/books/ 
+
+
+endpoint. By default, 10 items are returned per page.
 
 
 Example
