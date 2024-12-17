@@ -177,11 +177,13 @@ endpoint. By default, 10 items are returned per page.
 Example
 
 
-http://127.0.0.1:8000/api/books/?page=2&page_size=4
+api/books/?page=2&page_size=4
 
 Example API Call
 To retrieve books in English or French related to "child" or "infant" topics:
 
 Copy code
+
+
 GET /api/books/?language=en,fr&topic=child,infant
 
