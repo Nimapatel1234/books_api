@@ -105,6 +105,8 @@ topic	String	Filter by subject or bookshelf. Supports partial matches.	topic=chi
 author	String	Filter by author's name. Supports case-insensitive partial matching.	author=shakespeare
 title	String	Filter by book title. Supports case-insensitive partial matching.	title=hamlet
 page	Integer	Paginate through results (25 books per page).	page=2
+
+
 Response Example
 json
 {
@@ -169,9 +171,6 @@ json
 Example API Call
 To retrieve books in English or French related to "child" or "infant" topics:
 
-sql
 Copy code
 GET /api/books/?language=en,fr&topic=child,infant
-Pagination Details
-Results are paginated in sets of 25 books.
-Use the next and previous links in the API response to navigate between pages.
+
