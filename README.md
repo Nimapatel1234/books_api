@@ -185,10 +185,15 @@ To retrieve books in English or French related to "child" or "infant" topics:
 Copy code
 
 
+
 GET /api/books/?language=en,fr&topic=child,infant
 
+
 Adding Swagger API Documentation
+
 Follow these steps to add Swagger API documentation to the project:
+
+
 
 Install the drf-yasg library
 Use pip to install the library:
@@ -208,38 +213,12 @@ Copy code
     'drf_yasg',
 ]
 Create Swagger Configuration in urls.py
+
 Import drf_yasg tools and define the schema view:
 
-python
 
-Copy code
-
-
-from django.urls import path, re_path
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Book Retrieval API",
-        default_version='v1',
-        description="API documentation for the Book Retrieval System",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="support@example.com"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
-
-urlpatterns = [
-    ...
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-]
 Access Swagger and Redoc Documentation
+
 After starting the server, access the API documentation at the following URLs:
 
 Swagger
