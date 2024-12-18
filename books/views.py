@@ -86,10 +86,11 @@ class CustomPagination(PageNumberPagination):
 
 class BookRawQueryView(APIView):
     def get(self, request):
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM books LIMIT 10;")
-            results = cursor.fetchall()
-            return Response(results)
+        books = Book.objects.all()[:10]  # Fetch first 10 books
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data)
+
+
 
 
 def book_list_page(request):
