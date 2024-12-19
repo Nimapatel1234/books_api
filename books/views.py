@@ -12,9 +12,10 @@ from rest_framework.permissions import IsAdminUser , IsAuthenticated
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db import IntegrityError
+
 
 from django.db import connection
-
 # Register User (Admin Only)
 def register_user(request):
     if not request.user.is_authenticated or not request.user.is_staff:
@@ -22,22 +23,36 @@ def register_user(request):
         return redirect('login')
 
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
 
-        if password == confirm_password:
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exists')
-            elif User.objects.filter(email=email).exists():
-                messages.error(request, 'Email already exists')
-            else:
-                User.objects.create_user(username=username, email=email, password=password)
-                messages.success(request, 'Registration successful')
-                return redirect('login')
-        else:
-            messages.error(request, 'Passwords do not match')
+        if not username or not email or not password:
+            messages.error(request, "All fields are required.")
+            return redirect('register')
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('register')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists.')
+            return redirect('register')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already exists.')
+            return redirect('register')
+
+        try:
+            User.objects.create_user(username=username, email=email, password=password)
+            messages.success(request, 'Registration successful.')
+            return redirect('login')
+        except IntegrityError as e:
+            messages.error(request, f"Database error: {e}")
+        except Exception as e:
+            messages.error(request, f"An unexpected error occurred: {e}")
+
     return render(request, 'register.html')
 
 # Login User
