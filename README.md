@@ -185,5 +185,43 @@ To retrieve books in English or French related to "child" or "infant" topics:
 Copy code
 
 
+
 GET /api/books/?language=en,fr&topic=child,infant
+
+
+Adding Swagger API Documentation
+
+Follow these steps to add Swagger API documentation to the project:
+
+
+
+Install the drf-yasg library
+Use pip to install the library:
+
+bash
+Copy code
+pip install drf-yasg
+Update INSTALLED_APPS in settings.py
+Add drf_yasg to the list of installed apps:
+
+python
+Copy code
+ 
+ INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'drf_yasg',
+]
+Create Swagger Configuration in urls.py
+
+Import drf_yasg tools and define the schema view:
+
+
+Access Swagger and Redoc Documentation
+
+After starting the server, access the API documentation at the following URLs:
+
+Swagger
+
+UI: http://127.0.0.1:8000/swagger/
 
